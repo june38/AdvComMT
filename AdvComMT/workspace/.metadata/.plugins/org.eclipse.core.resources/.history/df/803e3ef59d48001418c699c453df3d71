@@ -1,0 +1,159 @@
+package practice_problem2;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class PB2 extends JFrame{
+	JPanel rightPanel,leftPanel;
+	JButton clearButton,exitButton;
+	JCheckBox checkbox;
+	JSlider slider;
+	JLabel sliderLabel;
+	
+	boolean firstTime = true;
+	private int X ;
+    private int Y ;
+    private static final long serialVersionUID = 1L;
+	private int side = 25;
+	
+	 public PB2(String title){
+		 super(title);
+		 createRightPanel();
+		 this.add(rightPanel,BorderLayout.EAST);
+		 createLeftPanel();
+		 this.add(leftPanel,BorderLayout.WEST);
+	 }
+	 
+	 
+	 public void createLeftPanel(){
+		 leftPanel = new ImagePanel();
+		 leftPanel.setPreferredSize(new Dimension(200,400));
+		 leftPanel.setBackground(Color.YELLOW);
+		 
+		 
+	 }
+	 
+	 public void createRightPanel(){
+		 rightPanel = new JPanel();
+		 rightPanel.setPreferredSize(new Dimension(200,400));
+		 rightPanel.setBackground(Color.GRAY);
+		 clearButton = new JButton("Clear");
+		 clearButton.setSize(new Dimension(20,20));
+		 exitButton = new JButton("Exit");
+		 exitButton.setSize(new Dimension(20,20));
+		 checkbox = new JCheckBox("pen ON/OFF");
+		 
+		 checkbox.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			 
+		 });
+		 slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
+		 sliderLabel = new JLabel("SIZE: ");
+		 
+		 slider.addChangeListener(new ChangeListener(){
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				sliderLabel.setText("SIZE: "+ slider.getValue());
+			}
+			 
+		 });
+		 rightPanel.add(checkbox);
+		 rightPanel.add(clearButton,BorderLayout.EAST);
+		 rightPanel.add(exitButton,BorderLayout.WEST);
+		 
+		 clearButton.addActionListener(new ActionListener (){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				rightPanel.setBackground(Color.GRAY);
+			}
+			 
+		 });
+		 
+		 exitButton.addActionListener(new ActionListener(){
+
+			 public void actionPerformed(ActionEvent e) {
+					int choice = JOptionPane.showConfirmDialog(
+							PB2.this,
+							"Are you sure?",
+							"Please confirm",
+							JOptionPane.YES_NO_OPTION);
+					if(choice==JOptionPane.YES_OPTION){
+						System.exit(0);
+					}
+				}		
+			 
+		 });
+		 rightPanel.add(sliderLabel);
+		 rightPanel.add(slider);
+		 rightPanel.add(checkbox);
+		 rightPanel.add(clearButton);
+		 rightPanel.add(exitButton);
+	 }
+	 public static void main (String [] args){
+		 System.out.print("main");
+		 CreateAndShowGUI();
+	 }
+	 
+	 public static void CreateAndShowGUI(){
+		PB2 frame = new PB2("PB2");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(400,400);
+		frame.setVisible(true);
+		
+	 }
+}
+class ImagePanel extends JPanel{
+	private static final long serialVersionUID = 1L;
+	private int side = 25;
+	boolean firstTime = true;
+    private int X ;
+    private int Y ;
+    public ImagePanel() {
+	 addMouseListener(new MouseAdapter() {
+        public void mousePressed(MouseEvent e) {
+            drawEll(e.getX(),e.getY());
+            firstTime = false;
+        }
+    });   
+}
+private void drawEll(int x, int y) {
+   X=x;
+   Y=y;
+   repaint(x,y,side,side);
+}
+protected void paintComponent(Graphics g) {
+	if(!firstTime){
+		Graphics2D g2 = (Graphics2D) g;
+       g2.setColor(Color.GREEN);
+       Ellipse2D temp = new Ellipse2D.Double(X,Y,side,side);
+       g2.fill(temp);
+	}
+}
+}

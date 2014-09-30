@@ -1,0 +1,29 @@
+package practice_problem2;
+
+import java.awt.Color;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class PB2 extends JFrame{
+	JPanel rightPanel,leftPanel;
+	JButton clearButton,exitButton;
+	 public PB2(){
+		 createRightPanel();
+		 createLeftPanel();
+		 
+	 }
+	 
+	 public void createRightPanel(){
+		 rightPanel = new JPanel();
+		 rightPanel.setBackground(Color.WHITE);
+	 }
+	 
+	 public void createLeftPanel(){
+		 leftPanel = new JPanel();
+		 rightPanel.setBackground(Color.GRAY);
+		 clearButton = new JButton();
+		 
+	 }
+}

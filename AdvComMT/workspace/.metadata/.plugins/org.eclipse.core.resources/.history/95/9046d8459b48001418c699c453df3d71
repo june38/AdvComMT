@@ -1,0 +1,112 @@
+package practice_problem2;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+
+public class PB2 extends JFrame{
+	JPanel rightPanel,leftPanel;
+	JButton clearButton,exitButton;
+	JCheckBox checkbox;
+	JSlider slider;
+	JLabel sliderLabel;
+	
+	 public PB2(String title){
+		 super(title);
+		 createRightPanel();
+		 this.add(rightPanel,BorderLayout.WEST);
+		 createLeftPanel();
+		 this.add(leftPanel,BorderLayout.EAST);
+	 }
+	 
+	 public void createRightPanel(){
+		 rightPanel = new JPanel();
+		 rightPanel.setBackground(Color.YELLOW);
+	 }
+	 
+	 public void createLeftPanel(){
+		 leftPanel = new JPanel();
+		 leftPanel.setBackground(Color.GRAY);
+		 clearButton = new JButton();
+		 exitButton = new JButton();
+		 checkbox = new JCheckBox("pen ON/OFF");
+		 
+		 checkbox.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			 
+		 });
+		 slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
+		 sliderLabel = new JLabel();
+		 
+		 slider.addChangeListener(new ChangeListener(){
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				sliderLabel.setText("SIZE: "+ slider.getValue());
+			}
+			 
+		 });
+		 leftPanel.add(checkbox);
+		 leftPanel.add(clearButton,BorderLayout.EAST);
+		 leftPanel.add(exitButton,BorderLayout.WEST);
+		 
+		 clearButton.addActionListener(new ActionListener (){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				leftPanel.setBackground(Color.GRAY);
+			}
+			 
+		 });
+		 
+		 exitButton.addActionListener(new ActionListener(){
+
+			 public void actionPerformed(ActionEvent e) {
+					int choice = JOptionPane.showConfirmDialog(
+							PB2.this,
+							"Are you sure?",
+							"Please confirm",
+							JOptionPane.YES_NO_OPTION);
+					if(choice==JOptionPane.YES_OPTION){
+						System.exit(0);
+					}
+				}		
+			 
+		 });
+		 leftPanel.add(sliderLabel);
+		 leftPanel.add(slider);
+		 leftPanel.add(checkbox);
+		 leftPanel.add(clearButton);
+		 leftPanel.add(exitButton);
+	 }
+	 public static void main (String [] args){
+		 System.out.print("main");
+		 CreateAndShowGUI();
+	 }
+	 
+	 public static void CreateAndShowGUI(){
+		PB2 frame = new PB2("PB2");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(400,400);
+		frame.setVisible(true);
+		
+	 }
+}

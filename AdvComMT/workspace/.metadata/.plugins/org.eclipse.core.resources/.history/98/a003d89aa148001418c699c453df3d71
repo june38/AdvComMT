@@ -1,0 +1,167 @@
+package practice_problem2;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class PB2 extends JFrame{
+	JPanel rightPanel,leftPanel;
+	JButton clearButton,exitButton;
+	JCheckBox checkbox;
+	JSlider slider;
+	JLabel sliderLabel;
+	static Color color = Color.WHITE;
+	boolean check = false;
+	int x;
+	int y;
+
+	public PB2(String title){
+		super(title);
+		createRightPanel();
+		this.add(rightPanel,BorderLayout.EAST);
+		createLeftPanel();
+		this.add(leftPanel,BorderLayout.WEST);
+	}
+
+
+	public void createLeftPanel(){
+		leftPanel = new ImagePanel();
+		leftPanel.setPreferredSize(new Dimension(200,400));
+		leftPanel.setBackground(Color.YELLOW);
+		leftPanel.addMouseMotionListener(new MouseMotionListener(){
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				x= e.getX();
+				y = e.getY();
+				repaint();
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+
+	}
+
+	public void createRightPanel(){
+		rightPanel = new JPanel();
+		rightPanel.setPreferredSize(new Dimension(200,400));
+		rightPanel.setBackground(Color.GRAY);
+		clearButton = new JButton("Clear");
+		clearButton.setSize(new Dimension(20,20));
+		exitButton = new JButton("Exit");
+		exitButton.setSize(new Dimension(20,20));
+		checkbox = new JCheckBox("pen ON/OFF");
+
+		checkbox.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(check==false){
+					check = true;
+					color = Color.black;
+					System.out.println("check>>Black");
+				}else
+					check = false;
+				color = Color.white;
+				System.out.println("check>>White");
+			}
+
+		});
+		slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
+		sliderLabel = new JLabel("SIZE: ");
+
+		slider.addChangeListener(new ChangeListener(){
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				sliderLabel.setText("SIZE: "+ slider.getValue());
+				System.out.println(slider.getValue());
+			}
+
+		});
+		rightPanel.add(checkbox);
+		rightPanel.add(clearButton,BorderLayout.EAST);
+		rightPanel.add(exitButton,BorderLayout.WEST);
+
+		clearButton.addActionListener(new ActionListener (){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				rightPanel.setBackground(Color.GRAY);
+			}
+
+		});
+
+		exitButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				int choice = JOptionPane.showConfirmDialog(
+						PB2.this,
+						"Are you sure?",
+						"Please confirm",
+						JOptionPane.YES_NO_OPTION);
+				if(choice==JOptionPane.YES_OPTION){
+					System.exit(0);
+				}
+			}		
+
+		});
+		rightPanel.add(sliderLabel);
+		rightPanel.add(slider);
+		rightPanel.add(checkbox);
+		rightPanel.add(clearButton);
+		rightPanel.add(exitButton);
+	}
+	public static void main (String [] args){
+		System.out.print("main");
+		CreateAndShowGUI();
+	}
+
+	public static void CreateAndShowGUI(){
+		PB2 frame = new PB2("PB2");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(400,400);
+		frame.setVisible(true);
+
+	}
+	class ImagePanel extends JPanel{
+		int brushSize = 0;
+		
+		public void paint(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			brushSize = slider.getValue();
+			Ellipse2D temp = new Ellipse2D.Double(x,y,brushSize/2,brushSize/2);
+			g2.fill(temp);
+		}
+
+		
+
+	}
+}
+
